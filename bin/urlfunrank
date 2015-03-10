@@ -3,20 +3,13 @@
 # parse the unique function names in URLs that use the /function_name?arg1=xxx... pattern
 # return a sorted ranking of function names by the popularity
 #
-# assumes input is a bounce.io csv file
-#  field 22 is the URI_map that contains all URIs in a given email
-#  the URI_map contains 3-tuples of {href:text, link:text, domain:text}
-#  parse out the link text field
-#  focus only on URLs that have a standard /function_name?arg1=xxx... pattern
+# assumes input is a list of URIs, one per line
+#  focus only on http URLs that have a standard /function_name?arg1=xxx... pattern
 #  count the uniq patterns
 #  sort the result by most popular
 
-awk -F'","' '{print $22}' | \
-  awk -F'} , {' '{for (i=1; i<=NF ; i++) print $i}' | \
-    awk -F'"" : ""' '{print $3}' | \
-       awk -F'"" , ""' '{print $1}' | \
-         grep '^http'| grep '\?'| \
-         sed -e 's/^.*\(\/[^?]*?\)..*$/\1/' | \
-         sort | uniq -c | \
-         sort -nr
+grep '^http'| grep '\?'| \
+sed -e 's/^.*\(\/[^?]*?\)..*$/\1/' | \
+sort | uniq -c | \
+sort -nr
 
