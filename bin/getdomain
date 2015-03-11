@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# parse the URIs from a bounce.io email record dataset
+#
+# assumes input is a bounce.io csv file
+#  field 22 is the URI_map that contains all URIs in a given email
+#  the URI_map contains 3-tuples of {href:text, link:text, domain:text}
+#  parse out the link text field
+
+awk -F'","' '{print $22}' | \
+  awk -F'} , {' '{for (i=1; i<=NF ; i++) print $i}' | \
+    awk -F'"" : ""' '{print $4}' | \
+      awk -F'""' '{print $1}'
