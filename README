@@ -2,3 +2,12 @@ Routines for analyzing email records
 
 The utilities are meant to help parse data sets and 
 develop an understanding of patterns.
+
+USAGE:
+
+When working with bounce.io data sources it's convenient (and faster) to inspect
+a smaller subset of records rather than the full dataset.  The commands are
+filters and expect data on STDIN.  You can feed subsets of the source data file 
+with a simple head command like this:
+
+head -10 data/csv_data_file | bin/getdomain
