@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# extract the give field number from a bounce.io email record dataset
+#
+# assumes input is a bounce.io csv file
+#  field number is the index (1..NF) of the desired field.
+
+fieldnum=$1
+awk -F'","' "{print \$$fieldnum}"
