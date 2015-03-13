@@ -10,4 +10,4 @@ a smaller subset of records rather than the full dataset.  The commands are
 filters and expect data on STDIN.  You can feed subsets of the source data file 
 with a simple head command like this:
 
-head -10 data/csv_data_file | bin/getdomain
+head -10 data/csv_data_file | bin/geturi
