@@ -4,6 +4,27 @@
 #
 # assumes input is a bounce.io csv file
 #  field number is the index (1..NF) of the desired field.
-
+#
+# Note: The field separator is "," (one_double_quote comma one_double_quote) 
+#       One known special case is handled when the URI href_text has ahs a comma as its value.
+#       In that case the text is stored as "","" which will unintentially match the ","
+#       field separator and produce 25 fields instead of 24.  In this case we just glue
+#       field 22 and 23 back together again with ",". 
+# Note: Treating the record seperator as "\n" (one_double_quote newline one_double_qute)
+#       protects against broken records due to the inclusion of newlines in URLs
+#       Including both the quote before and after newline has the added benefit of
+#       cleaning the text so that only the first char of the first line and 
+#       last char of the last line have a stray double quote caracter.
 fieldnum=$1
-awk -F'","' "{print \$$fieldnum}"
+awk  -vfid=$fieldnum -F'","' "RS=\"\n\" {
+   if (NF==24) 
+      print \$fid
+   else if (NF==25) 
+      if (fid < 22)
+         print \$fid
+      else if (fid==22) 
+         print \$fid\"\\\",\\\"\"\$23
+      else 
+         print \$(fid + 1)
+}
+   "
