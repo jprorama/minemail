@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# list the fields in the named file 
+# assumes fields names are in the first line of the CSV file
+# returns field names and numeric index
+
+head -1 $1 | awk -F'","' '{ for (i=1; i<=NF; i++) printf("%d: %s\n", i, $i) }'
