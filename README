@@ -17,3 +17,12 @@ A more complex example that add on URI parsing:
 head -10 data/csv_data_file | geturi | grep -v '^$' | python bin/parseurl-demo.py
 
 The parseurl-demo.py should be extended to inspect the features of the URL.
+
+MODULE:
+
+If you use environment modules you can add the bin dir to your path with the following
+run from the top level project directory:
+
+  module use `pwd`
+  module load minemail
+`
