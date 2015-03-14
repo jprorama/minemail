@@ -1,0 +1,17 @@
+#%Module1.0#####################################################################
+##
+## module for setting bin
+##
+##
+proc ModulesHelp { } {
+        global version modroot
+
+        puts stderr "minemail - sets the Environment for minemail in my project directory"
+}
+
+module-whatis   "Sets the environment for using minemail"
+
+# for Tcl script use only
+set     topdir          [pwd]
+
+prepend-path    PATH            $topdir/bin
