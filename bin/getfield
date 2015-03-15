@@ -17,13 +17,23 @@
 #       last char of the last line have a stray double quote caracter.
 fieldnum=$1
 awk  -vfid=$fieldnum -F'","' "RS=\"\n\" {
-   if (NF==24) 
+   if (NF==24) {
+      if (fid == 22) {
+         gsub(/\n/, \"%0A\", \$fid) 
+         gsub(/\r/, \"%13\", \$fid) 
+         }
       print \$fid
+      }
    else if (NF==25) 
       if (fid < 22)
          print \$fid
-      else if (fid==22) 
+      else if (fid==22) {
+         gsub(/\n/, \"%0A\", \$fid) 
+         gsub(/\r/, \"%13\", \$fid) 
+         gsub(/\n/, \"%0A\", \$23) 
+         gsub(/\r/, \"%13\", \$23) 
          print \$fid\"\\\",\\\"\"\$23
+         }
       else 
          print \$(fid + 1)
 }
