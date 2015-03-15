@@ -1,0 +1,15 @@
+#!/usr/bin/python
+
+# extract the function args from url query parameters to create function args itemset
+
+from urlparse import urlparse
+import sys
+
+def argsplit(x): return x.split('=')
+def argname(x): return x[0]
+
+for line in sys.stdin:
+    url = urlparse(line.rstrip('\n'))
+    if url.query != "":
+        print ' '.join(map (argname, map(argsplit, url.query.split("&"))))
+
