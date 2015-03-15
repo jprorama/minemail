@@ -10,6 +10,7 @@ def argname(x): return x[0]
 
 for line in sys.stdin:
     url = urlparse(line.rstrip('\n'))
-    if url.query != "":
-        print ' '.join(map (argname, map(argsplit, url.query.split("&"))))
+    if url.scheme == "http":
+        if url.query != "":
+            print ' '.join(map (argname, map(argsplit, url.query.split("&"))))
 
