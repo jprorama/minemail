@@ -18,6 +18,24 @@ head -10 data/csv_data_file | geturi | grep -v '^$' | python bin/parseurl-demo.p
 
 The parseurl-demo.py should be extended to inspect the features of the URL.
 
+For example, the script funargs_itemset parses the query parameters in a URL and outputs
+the argument names as a space separated list of terms.  
+
+geturi < data/csv_data_file | python bin/funargs_itemset > data/args_data_file
+
+The output can be fed into fpgrowth in order to explore frequent patterns.
+
+fpgrowth -s1 -f" " data/args_data_file data/fg_args_data_file
+
+The query parameter of the URL is what is found after the ? in the URL.  From this 
+perspective, the "function parameters" are key=value pairs separated by &.  The
+script funargs_itemset parses out all the keys in a query parameter.
+
+The app fpgrowth can be found on Bergelt's web page:
+
+http://www.borgelt.net//fpgrowth.html
+
+
 MODULE:
 
 If you use environment modules you can add the bin dir to your path with the following
