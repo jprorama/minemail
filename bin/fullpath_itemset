@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+# extract the function args from url query parameters to create function args itemset
+
+from urlparse import urlparse
+import sys
+
+def pathsplit(x): return x.split('/')
+def argsplit(x): return x.split('=')
+def argname(x): return x[0]
+
+for line in sys.stdin:
+    url = urlparse(line.rstrip('\n'))
+    if url.scheme == "http":
+        print ' '.join(url.path.split("/"))
+
