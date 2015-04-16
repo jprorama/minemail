@@ -12,5 +12,8 @@ def argname(x): return x[0]
 for line in sys.stdin:
     url = urlparse(line.rstrip('\n'))
     if url.scheme == "http":
-        print ' '.join(url.path.split("/"))
+	if url.query != "":
+            print ' '.join(url.path.split("/")) + ' ' + ' '.join(map (argname, map(argsplit, url.query.split("&"))))
+        else:
+            print ' '.join(url.path.split("/"))
 
