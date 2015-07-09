@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# spawn jobs to extract function args
+
+# parse the bounce is data file name to extract parts for nameing results
+biofn=$1
+biodate=`echo $biofn |  awk -F__ '{print $2}' | awk -F. '{print $1}'`
+
+datestamp=`echo $biodate | awk -F_ '{print $1}'`
+timestamp=`echo $biodate | awk -F_ '{print $2}' | sed -e 's/-/:/g'`
+
+datestring="$datestamp $timestamp"
+year=`date --date="$datestring" "+%Y"`
+month=`date --date="$datestring" "+%m"`
+day=`date --date="$datestring" "+%d"`
+
+mkdir -p data/funargs/$year/$month/$day
+
+funargsfn=funargs__$biodate
+
+cat << EOF
+#!/bin/bash
+
+#$ -S /bin/bash
+#$ -cwd
+#$ -N fa_$biodate
+#$ -l h_rt=00:30:00,vf=1G
+#$ -M jpr
+#$ -m eas
+#$ -V
+#
+echo $-
+
+module use `pwd` 
+module load python/python-2.7
+module load minemail
+
+cat $biofn | bash -x geturi | python -v bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
+EOF
+
