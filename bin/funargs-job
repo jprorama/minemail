@@ -27,14 +27,75 @@ cat << EOF
 #$ -l h_rt=00:30:00,vf=1G
 #$ -M jpr
 #$ -m eas
-#$ -V
 #
+echo DEBUG bash opts
 echo $-
+echo DEBUG list alias
+alias
+echo DEBUG which python
+which python
+echo DEBUG list env
+env | sort 
+echo DEBUG list exports
+export -p
+echo DEBUG list functions
+declare -f
 
-module use `pwd` 
-module load python/python-2.7
-module load minemail
+echo DEBUG redefine which as function
+which ()
+    {
+       (alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@
+    }
+export -f which
+echo DEBUG list functions
+declare -f
 
-cat $biofn | bash -x geturi | python -v bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
+
+#unset module
+#module use `pwd` 
+echo DEBUG add minemail to modules
+module use /rstore/user/jpr/default/projects/minemail
+#module load python/python-2.7
+#module load minemail
+
+echo DEBUG modulecmd load python/python-2.7 minemail
+/usr/bin/modulecmd bash load python/python-2.7 minemail 2>&1
+
+echo DEBUG module load
+module load python/python-2.7 minemail
+
+echo DEBUG list alias
+alias
+echo DEBUG which python
+which python
+echo DEBUG list env
+env | sort
+echo DEBUG list exports
+export -p
+echo DEBUG list functions
+declare -f 
+
+echo DEBUG call modulecmd
+/usr/bin/modulecmd bash load python/python-2.7 2>&1
+echo
+
+echo DEBUG show modulecmd
+/usr/bin/modulecmd bash show python/python-2.7 2>&1
+
+#echo DEBUG python func workaround
+#python() { /share/apps/python/2.7.2/bin/python2.7;}
+#export -f python
+
+echo DEBUG list functions
+export -f 
+
+echo DEBUG which python
+which python
+echo DEBUG which python2.7
+which python2.7
+
+head $biofn | bash -x geturi | python -v bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
+
+sleep 100
 EOF
 
