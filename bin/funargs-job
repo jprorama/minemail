@@ -34,7 +34,7 @@ cat << EOF
 module use `pwd` 
 module load python/python-2.7 minemail
 
-head $biofn | geturi | python bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
+cat $biofn | geturi | python bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
 
 EOF
 
