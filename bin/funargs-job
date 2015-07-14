@@ -23,18 +23,18 @@ cat << EOF
 
 #$ -S /bin/bash
 #$ -cwd
+#$ -o job-output/
+#$ -e job-output/
 #$ -N fa_$biodate
 #$ -l h_rt=00:30:00,vf=1G
 #$ -M jpr
 #$ -m eas
-#$ -V
 #
-echo $-
 
 module use `pwd` 
-module load python/python-2.7
-module load minemail
+module load python/python-2.7 minemail
 
-cat $biofn | bash -x geturi | python -v bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
+head $biofn | geturi | python bin/funargs_itemset > data/funargs/$year/$month/$day/$funargsfn
+
 EOF
 
