@@ -1,2 +1,3 @@
 # place data files in data/ subfolder and ignore them
 data/*
+job-output/*
