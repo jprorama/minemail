@@ -19,6 +19,6 @@ do
 
   rulesfn=$istype__$biodate
 
-  time fpgrowth -tr -s10.0 $file data/rules/$year/$month/$day/$rulesfn
+  time fpgrowth -tr -s10.0 -f" " $file data/rules/$year/$month/$day/$rulesfn
 done
 
