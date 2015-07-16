@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# spawn jobs to extract full function path
+
+# parse the bounce is data file name to extract parts for nameing results
+biofn=$1
+biodate=`echo $biofn |  awk -F__ '{print $2}' | awk -F. '{print $1}'`
+
+datestamp=`echo $biodate | awk -F_ '{print $1}'`
+timestamp=`echo $biodate | awk -F_ '{print $2}' | sed -e 's/-/:/g'`
+
+datestring="$datestamp $timestamp"
+year=`date --date="$datestring" "+%Y"`
+month=`date --date="$datestring" "+%m"`
+day=`date --date="$datestring" "+%d"`
+
+mkdir -p data/fullpath/$year/$month/$day
+
+fullpathfn=fullpath__$biodate
+
+cat << EOF
+#!/bin/bash
+
+#$ -S /bin/bash
+#$ -cwd
+#$ -o job-output/
+#$ -e job-output/
+#$ -N fp_$biodate
+#$ -l h_rt=00:30:00,vf=1G
+#$ -M jpr
+#$ -m eas
+#
+
+module use `pwd` 
+module load python/python-2.7 minemail
+
+cat $biofn | geturi | python bin/fullpath_itemset > data/fullpath/$year/$month/$day/$fullpathfn
+
+EOF
+
