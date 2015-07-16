@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# parse the itemset files in the given dir and generate rules
+# the file basename is assume to have bounce.io file name date naming
+for file in $@
+do 
+  istype=`echo $file |  awk -F__ '{print $1}'`
+  biodate=`echo $file |  awk -F__ '{print $2}' | awk -F. '{print $1}'`
+
+  datestamp=`echo $biodate | awk -F_ '{print $1}'`
+  timestamp=`echo $biodate | awk -F_ '{print $2}' | sed -e 's/-/:/g'`
+
+  datestring="$datestamp $timestamp"
+  year=`date --date="$datestring" "+%Y"`
+  month=`date --date="$datestring" "+%m"`
+  day=`date --date="$datestring" "+%d"`
+
+  mkdir -p data/rules/$year/$month/$day
+
+  rulesfn=$istype__$biodate
+
+  time fpgrowth -tr -s10.0 $file data/rules/$year/$month/$day/$rulesfn
+done
+
