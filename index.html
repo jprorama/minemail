@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Minemail by jprorama</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Minemail</h1>
+        <h2>utilities to mine email</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/jprorama/minemail/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/jprorama/minemail/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/jprorama/minemail" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <p>Routines for analyzing email records</p>
+
+<p>The utilities are meant to help parse data sets and 
+develop an understanding of patterns.</p>
+
+<p>USAGE:</p>
+
+<p>When working with bounce.io data sources it's convenient (and faster) to inspect
+a smaller subset of records rather than the full dataset.  The commands are
+filters and expect data on STDIN.  You can feed subsets of the source data file 
+with a simple head command like this:</p>
+
+<p>head -10 data/csv_data_file | bin/geturi</p>
+
+<p>A more complex example that add on URI parsing:</p>
+
+<p>head -10 data/csv_data_file | geturi | grep -v '^$' | python bin/parseurl-demo.py</p>
+
+<p>The parseurl-demo.py should be extended to inspect the features of the URL.</p>
+
+<p>For example, the script funargs_itemset parses the query parameters in a URL and outputs
+the argument names as a space separated list of terms.  </p>
+
+<p>geturi &lt; data/csv_data_file | python bin/funargs_itemset &gt; data/args_data_file</p>
+
+<p>The output can be fed into fpgrowth in order to explore frequent patterns.</p>
+
+<p>fpgrowth -s1 -f" " data/args_data_file data/fg_args_data_file</p>
+
+<p>The query parameter of the URL is what is found after the ? in the URL.  From this 
+perspective, the "function parameters" are key=value pairs separated by &amp;.  The
+script funargs_itemset parses out all the keys in a query parameter.</p>
+
+<p>The app fpgrowth can be found on Bergelt's web page:</p>
+
+<p><a href="http://www.borgelt.net//fpgrowth.html">http://www.borgelt.net//fpgrowth.html</a></p>
+
+<p>MODULE:</p>
+
+<p>If you use environment modules you can add the bin dir to your path with the following
+run from the top level project directory:</p>
+
+<p>module use <code>pwd</code>
+  module load minemail
+`</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
